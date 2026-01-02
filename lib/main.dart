@@ -44,7 +44,7 @@ class YoruPhonicsApp extends StatelessWidget {
           fontFamily: 'Noto',
           useMaterial3: true,
         ),
-        home: const SplashScreen(),
+        home: const AuthWrapper(),
         routes: {
           'authwrapper': (context) => const AuthWrapper(),
           '/splash': (context) =>
