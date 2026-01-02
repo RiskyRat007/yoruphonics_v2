@@ -72,10 +72,53 @@ class _PhonicsModuleScreenState extends State<PhonicsModuleScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+<<<<<<< HEAD
       backgroundColor: Colors.green.shade50,
       appBar: AppBar(
         title: const Text('Phonics Module'),
         backgroundColor: Colors.green.shade700,
+=======
+      appBar: AppBar(title: Text('Phonics Module')),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            MascotWidget(message: 'Can you say the sound of $currentLetter?'),
+            SizedBox(height: 20),
+            Text(
+              currentLetter,
+              style: TextStyle(fontSize: 48, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: 30),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.green.shade800,
+                foregroundColor: Colors.white,
+                padding: const EdgeInsets.symmetric(
+                  vertical: 12,
+                  horizontal: 24,
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+              onPressed: () async {
+                // Log progress to Firestore
+                await studentsCollection.doc(widget.studentId).set({
+                  'phonicsScore': currentLetterIndex + 1,
+                  'id': widget.studentId,
+                }, SetOptions(merge: true));
+
+                setState(() {
+                  currentLetterIndex =
+                      (currentLetterIndex + 1) % letters.length;
+                });
+              },
+              child: Text('Next Letter'),
+            ),
+          ],
+        ),
+>>>>>>> f6411abeae0e0b41f577fdacd9bd484d039a89ec
       ),
       body: _isLoading
           ? const Center(
