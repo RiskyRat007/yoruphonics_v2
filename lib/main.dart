@@ -44,8 +44,9 @@ class YoruPhonicsApp extends StatelessWidget {
           fontFamily: 'Noto',
           useMaterial3: true,
         ),
-        home: const AuthWrapper(),
+        home: const SplashScreen(),
         routes: {
+          'authwrapper': (context) => const AuthWrapper(),
           '/splash': (context) =>
               const SplashScreen(), // Not used as home anymore? Or maybe keep it?
           '/home': (context) => HomeScreen(),
