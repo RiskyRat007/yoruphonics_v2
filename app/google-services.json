@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "676941103224",
+    "project_id": "yoruphonics-v2",
+    "storage_bucket": "yoruphonics-v2.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:676941103224:android:300c4f82c37705c0962d8d",
+        "android_client_info": {
+          "package_name": "com.example.yoruphonics_v2"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBD9G2MT16my_SGkCf3HOg7IHMyY0bWCdw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

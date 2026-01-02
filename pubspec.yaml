@@ -1,0 +1,43 @@
+name: yoruphonics_v2
+description: A Flutter project for YoruPhonics v5.1
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.10.4
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # --- Core Flutter packages ---
+  cupertino_icons: ^1.0.8
+  http: ^1.1.0
+
+  # --- Firebase packages ---
+  firebase_core: ^4.3.0
+  cloud_firestore: ^6.1.1
+
+  # --- UI enhancements ---
+  google_fonts: ^6.2.1          # For fun custom fonts like Fredoka One
+  flutter_spinkit: ^5.2.0       # Animated loading indicators
+  animated_text_kit: ^4.2.2     # Typing / talking text animation
+  flutter_tts: ^3.8.3           # Text-to-speech (Ijapa's voice)
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  uses-material-design: true
+
+  # --- Your image assets ---
+  assets:
+    - assets/ijapamascot.png
+
+  # --- Your local font (Noto) ---
+  fonts:
+    - family: Noto
+      fonts:
+        - asset: assets/fonts/NotoSans-VariableFont_wdth,wght.ttf
