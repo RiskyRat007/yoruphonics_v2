@@ -12,6 +12,7 @@ import 'screens/home_screen.dart';
 import 'screens/phonics_module.dart';
 import 'screens/comprehension_module.dart';
 import 'screens/teacher_dashboard.dart';
+import 'screens/signin_screen.dart'; // 👈 NEW import
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -28,8 +29,9 @@ class YoruPhonicsApp extends StatelessWidget {
       title: 'YoruPhonics v5.1',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(primarySwatch: Colors.green, fontFamily: 'Noto'),
-      home: const SplashScreen(),
+      home: const SplashScreen(), // 👈 Splash comes first
       routes: {
+        '/signin': (context) => const SignInScreen(), // 👈 Added Sign-In route
         '/home': (context) => HomeScreen(),
         '/phonics': (context) => PhonicsModuleScreen(studentId: 'P-101'),
         '/comprehension': (context) =>
@@ -71,9 +73,12 @@ class _SplashScreenState extends State<SplashScreen>
     // Make Ijapa talk after splash starts
     _speak("E káàárò! I’m Ijapa. Let’s start learning our phonics together!");
 
-    // Navigate to home after 5 seconds
+    // Navigate to sign-in screen after 5 seconds
     Timer(const Duration(seconds: 5), () {
-      Navigator.pushReplacementNamed(context, '/home');
+      Navigator.pushReplacementNamed(
+        context,
+        '/signin',
+      ); // 👈 now goes to sign-in
     });
   }
 
