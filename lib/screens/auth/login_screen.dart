@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../services/auth_service.dart';
 import '../../models/user_model.dart';
 import 'role_selection_screen.dart';
+import '../splash_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -107,9 +108,15 @@ class _LoginScreenState extends State<LoginScreen> {
                                 });
                               } else {
                                 // Navigation is handled by wrapper in main.dart or we can pop
-                                Navigator.popUntil(
+                                // Navigate to splash screen
+                                // Navigate to splash screen
+                                Navigator.pushReplacement(
                                   context,
-                                  (route) => route.isFirst,
+                                  MaterialPageRoute(
+                                    builder: (context) => const SplashScreen(
+                                      nextRoute: 'authwrapper',
+                                    ),
+                                  ),
                                 );
                               }
                             } catch (e) {

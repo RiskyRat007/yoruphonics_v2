@@ -9,7 +9,8 @@ import 'package:flutter_tts/flutter_tts.dart';
 // Splash Screen with Talking Ijapa 🐢
 // -----------------------------------------------------------------------------
 class SplashScreen extends StatefulWidget {
-  const SplashScreen({super.key});
+  final String nextRoute;
+  const SplashScreen({super.key, this.nextRoute = '/role-selection'});
 
   @override
   State<SplashScreen> createState() => _SplashScreenState();
@@ -36,9 +37,9 @@ class _SplashScreenState extends State<SplashScreen>
     // Make Ijapa talk after splash starts
     _speak("E káàárò! I’m Ijapa. Let’s start learning our phonics together!");
 
-    // Navigate to home after 5 seconds
+    // Navigate to next route after 5 seconds
     Timer(const Duration(seconds: 5), () {
-      Navigator.pushReplacementNamed(context, '/home');
+      Navigator.pushReplacementNamed(context, widget.nextRoute);
     });
   }
 
