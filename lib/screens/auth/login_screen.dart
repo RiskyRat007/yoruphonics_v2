@@ -51,6 +51,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
                 const SizedBox(height: 40),
+
+                // Email field
                 TextFormField(
                   decoration: InputDecoration(
                     labelText: 'Email',
@@ -63,6 +65,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   validator: (val) => val!.isEmpty ? 'Enter an email' : null,
                 ),
                 const SizedBox(height: 20),
+
+                // Password field
                 TextFormField(
                   obscureText: true,
                   decoration: InputDecoration(
@@ -77,6 +81,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       val!.length < 6 ? 'Enter a password 6+ chars long' : null,
                 ),
                 const SizedBox(height: 20),
+
                 if (error.isNotEmpty)
                   Text(
                     error,
@@ -84,6 +89,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     textAlign: TextAlign.center,
                   ),
                 const SizedBox(height: 20),
+
+                // Login button
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.teal,
@@ -107,9 +114,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                   isLoading = false;
                                 });
                               } else {
-                                // Navigation is handled by wrapper in main.dart or we can pop
-                                // Navigate to splash screen
-                                // Navigate to splash screen
                                 Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(
@@ -141,7 +145,9 @@ class _LoginScreenState extends State<LoginScreen> {
                           style: TextStyle(fontSize: 18, color: Colors.white),
                         ),
                 ),
+
                 const SizedBox(height: 20),
+
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [

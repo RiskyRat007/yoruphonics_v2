@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
 import '../models/user_model.dart';
 import 'auth/role_selection_screen.dart';
 import 'home_screen.dart';
@@ -13,19 +14,27 @@ class AuthWrapper extends StatelessWidget {
   Widget build(BuildContext context) {
     final user = Provider.of<UserModel?>(context);
 
-    // If not logged in, show Role Selection (or Login)
+    // No user logged in
     if (user == null) {
       return const RoleSelectionScreen();
     }
 
-    // Role-based routing
-    if (user.role == 'teacher') {
-      return TeacherDashboardScreen();
-    } else if (user.role == 'researcher') {
-      return ResearcherDashboardScreen();
-    } else {
-      // Default to pupil (HomeScreen)
+    // If user exists but role not assigned yet
+    // ignore: unnecessary_null_comparison
+    if (user.role == null || user.role!.isEmpty) {
       return HomeScreen();
+    }
+
+    // Route based on role
+    switch (user.role) {
+      case 'pupil':
+        return HomeScreen();
+      case 'teacher':
+        return TeacherDashboardScreen();
+      case 'researcher':
+        return ResearcherDashboardScreen();
+      default:
+        return HomeScreen();
     }
   }
 }
