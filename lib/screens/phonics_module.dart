@@ -2,18 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import '../widgets/mascot_widget.dart';
+import '../services/sound_service.dart';
 
 class PhonicsModuleScreen extends StatefulWidget {
   final String studentId;
-  const PhonicsModuleScreen({required this.studentId, Key? key})
-    : super(key: key);
+  const PhonicsModuleScreen({required this.studentId, super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _PhonicsModuleScreenState createState() => _PhonicsModuleScreenState();
 }
 
 class _PhonicsModuleScreenState extends State<PhonicsModuleScreen> {
   final FlutterTts _tts = FlutterTts();
+  final SoundService _soundService = SoundService();
   final List<String> sounds = ['a', 'b', 's', 't', 'sh', 'ch'];
   int currentIndex = 0;
   bool isQuizMode = false;
@@ -34,6 +36,7 @@ class _PhonicsModuleScreenState extends State<PhonicsModuleScreen> {
   @override
   void dispose() {
     _tts.stop();
+    _soundService.dispose();
     _stopwatch.stop();
     super.dispose();
   }
@@ -153,10 +156,10 @@ class _PhonicsModuleScreenState extends State<PhonicsModuleScreen> {
                     onPressed: () {
                       if (opt == currentSound) {
                         // Correct
-                        _speak("Good job!");
+                        _soundService.playAsset(SoundService.excellent);
                         quizScore++;
                       } else {
-                        _speak("Try again.");
+                        _soundService.playAsset(SoundService.tryAgain);
                       }
                       _nextStep();
                     },

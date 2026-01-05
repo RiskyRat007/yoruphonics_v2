@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:audioplayers/audioplayers.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class TeacherDashboardScreen extends StatelessWidget {
   final CollectionReference studentsCollection = FirebaseFirestore.instance

@@ -100,14 +100,17 @@ class _SplashScreenState extends State<SplashScreen>
     try {
       _isTalking = true;
       _talkController.forward();
+      // Using the exact asset
       await _player.play(AssetSource('audio/ijapaintro.mp3'));
 
       // Stop animation when done
       _player.onPlayerComplete.listen((_) {
-        setState(() {
-          _isTalking = false;
-        });
-        _talkController.stop();
+        if (mounted) {
+          setState(() {
+            _isTalking = false;
+          });
+          _talkController.stop();
+        }
       });
     } catch (e) {
       print("Error playing Ijapa voice: $e");

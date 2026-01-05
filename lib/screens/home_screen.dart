@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_tts/flutter_tts.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../models/user_model.dart';
+import '../services/sound_service.dart';
 import 'phonics_module.dart';
 import 'comprehension_module.dart';
 
 class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
+
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final FlutterTts _tts = FlutterTts();
+  final SoundService _soundService = SoundService();
 
   @override
   void initState() {
@@ -21,16 +23,13 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> _playWelcome() async {
-    await Future.delayed(const Duration(seconds: 1)); // Small delay
-    await _tts.setLanguage("en-NG");
-    await _tts.setPitch(1.0);
-    // "E kaabo" is Yoruba for Welcome.
-    await _tts.speak("Welcome! E káàbọ!");
+    await Future.delayed(const Duration(milliseconds: 500));
+    await _soundService.playAsset(SoundService.pupilWelcome);
   }
 
   @override
   void dispose() {
-    _tts.stop();
+    _soundService.dispose();
     super.dispose();
   }
 
@@ -50,53 +49,134 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor: Colors.green.shade700,
         elevation: 0,
       ),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(24.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Image.asset('assets/ijapamascot.png', height: 180),
-              const SizedBox(height: 30),
-              Text(
-                'Welcome, $displayName!',
-                textAlign: TextAlign.center,
-                style: GoogleFonts.fredoka(
-                  fontSize: 26,
-                  color: Colors.green.shade800,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(height: 16),
-              Text(
-                'Learn, listen, and grow your reading skills in English and Yoruba.',
-                textAlign: TextAlign.center,
-                style: GoogleFonts.nunito(
-                  fontSize: 16,
-                  color: Colors.grey.shade800,
-                ),
-              ),
-              const SizedBox(height: 40),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.pushReplacementNamed(context, '/role-selection');
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.green.shade700,
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 40,
-                    vertical: 16,
-                  ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Color(0xFFFFB74D), Color(0xFFFFE082)],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+        ),
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(24.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image.asset('assets/ijapamascot.png', height: 220),
+                const SizedBox(height: 20),
+                Text(
+                  'Welcome, $displayName!',
+                  textAlign: TextAlign.center,
+                  style: GoogleFonts.fredoka(
+                    fontSize: 26,
+                    color: Colors.green.shade800,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
-                child: Text(
-                  'Get Started',
-                  style: GoogleFonts.fredoka(fontSize: 18, color: Colors.white),
+                const SizedBox(height: 16),
+                Text(
+                  'Learn, listen, and grow your reading skills in English and Yoruba.',
+                  textAlign: TextAlign.center,
+                  style: GoogleFonts.nunito(
+                    fontSize: 16,
+                    color: Colors.grey.shade800,
+                  ),
                 ),
-              ),
-            ],
+                const SizedBox(height: 40),
+                Text(
+                  'Choose a module to start:',
+                  style: GoogleFonts.fredoka(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                SizedBox(height: 30),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.green.shade800,
+                    foregroundColor: Colors.white,
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 12,
+                      horizontal: 24,
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            PhonicsModuleScreen(studentId: studentId),
+                      ),
+                    );
+                  },
+                  child: Text(
+                    'Start Phonics Module',
+                    style: GoogleFonts.fredoka(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+                SizedBox(height: 15),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.green.shade800,
+                    foregroundColor: Colors.white,
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 12,
+                      horizontal: 24,
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            ComprehensionModuleScreen(studentId: studentId),
+                      ),
+                    );
+                  },
+                  child: Text(
+                    'Start Comprehension Module',
+                    style: GoogleFonts.fredoka(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+                SizedBox(height: 15),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.green.shade800,
+                    foregroundColor: Colors.white,
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 12,
+                      horizontal: 24,
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/teacher-dashboard');
+                  },
+                  child: Text(
+                    'Teacher Dashboard',
+                    style: GoogleFonts.fredoka(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

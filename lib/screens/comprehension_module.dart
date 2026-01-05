@@ -2,19 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import '../widgets/mascot_widget.dart';
+import '../services/sound_service.dart';
 
 class ComprehensionModuleScreen extends StatefulWidget {
   final String studentId;
-  const ComprehensionModuleScreen({required this.studentId, Key? key})
-    : super(key: key);
+  const ComprehensionModuleScreen({required this.studentId, super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _ComprehensionModuleScreenState createState() =>
       _ComprehensionModuleScreenState();
 }
 
 class _ComprehensionModuleScreenState extends State<ComprehensionModuleScreen> {
   final FlutterTts _tts = FlutterTts();
+  final SoundService _soundService = SoundService();
   final String passage =
       "Ijapa goes to the market. He sees many friends. He buys yams and pepper. Ijapa is happy.";
 
@@ -55,6 +57,7 @@ class _ComprehensionModuleScreenState extends State<ComprehensionModuleScreen> {
   @override
   void dispose() {
     _tts.stop();
+    _soundService.dispose();
     _stopwatch.stop();
     super.dispose();
   }
@@ -170,9 +173,9 @@ class _ComprehensionModuleScreenState extends State<ComprehensionModuleScreen> {
                         // Check answer
                         if (selectedOption == currentQuestion['answer']) {
                           score++;
-                          await _speak("Good job!");
+                          _soundService.playAsset(SoundService.excellent);
                         } else {
-                          await _speak("Try again next time.");
+                          _soundService.playAsset(SoundService.tryAgain);
                         }
 
                         if (currentQuestionIndex < questions.length - 1) {
