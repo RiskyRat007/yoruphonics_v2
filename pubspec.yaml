@@ -27,6 +27,7 @@ dependencies:
   flutter_spinkit: ^5.2.2      # Animated loading indicators
   animated_text_kit: ^4.2.2     # Typing / talking text animation
   flutter_tts: ^3.8.5           # Text-to-speech (Ijapa's voice)
+  audioplayers: ^6.0.0          # For playing MP3 assets
 
 
 dev_dependencies:

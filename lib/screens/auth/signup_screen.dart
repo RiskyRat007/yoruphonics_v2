@@ -18,6 +18,8 @@ class _SignupScreenState extends State<SignupScreen> {
   String email = '';
   String password = '';
   String name = '';
+  String? gender;
+  String? schoolLocation;
   String error = '';
   bool isLoading = false;
 
@@ -65,32 +67,78 @@ class _SignupScreenState extends State<SignupScreen> {
                   validator: (val) => val!.isEmpty ? 'Enter your name' : null,
                 ),
                 const SizedBox(height: 20),
-                TextFormField(
-                  decoration: InputDecoration(
-                    labelText: 'Email',
-                    prefixIcon: const Icon(Icons.email_outlined),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
+                if (widget.role == 'pupil') ...[
+                  DropdownButtonFormField<String>(
+                    decoration: InputDecoration(
+                      labelText: 'Gender',
+                      prefixIcon: const Icon(Icons.people_outline),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
                     ),
+                    items: ['Male', 'Female']
+                        .map(
+                          (label) => DropdownMenuItem(
+                            value: label,
+                            child: Text(label),
+                          ),
+                        )
+                        .toList(),
+                    onChanged: (val) => setState(() => gender = val),
+                    validator: (val) => val == null ? 'Select gender' : null,
                   ),
-                  onChanged: (val) => email = val,
-                  validator: (val) => val!.isEmpty ? 'Enter an email' : null,
-                ),
-                const SizedBox(height: 20),
-                TextFormField(
-                  obscureText: true,
-                  decoration: InputDecoration(
-                    labelText: 'Password',
-                    prefixIcon: const Icon(Icons.lock_outline),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
+                  const SizedBox(height: 20),
+                  DropdownButtonFormField<String>(
+                    decoration: InputDecoration(
+                      labelText: 'School Location',
+                      prefixIcon: const Icon(Icons.location_on_outlined),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
                     ),
+                    items: ['Urban', 'Semi-Urban']
+                        .map(
+                          (label) => DropdownMenuItem(
+                            value: label,
+                            child: Text(label),
+                          ),
+                        )
+                        .toList(),
+                    onChanged: (val) => setState(() => schoolLocation = val),
+                    validator: (val) => val == null ? 'Select location' : null,
                   ),
-                  onChanged: (val) => password = val,
-                  validator: (val) =>
-                      val!.length < 6 ? 'Enter a password 6+ chars long' : null,
-                ),
+                  const SizedBox(height: 20),
+                ],
                 const SizedBox(height: 20),
+                if (widget.role != 'pupil') ...[
+                  TextFormField(
+                    decoration: InputDecoration(
+                      labelText: 'Email',
+                      prefixIcon: const Icon(Icons.email_outlined),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                    onChanged: (val) => email = val,
+                    validator: (val) => val!.isEmpty ? 'Enter an email' : null,
+                  ),
+                  const SizedBox(height: 20),
+                  TextFormField(
+                    obscureText: true,
+                    decoration: InputDecoration(
+                      labelText: 'Password',
+                      prefixIcon: const Icon(Icons.lock_outline),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                    onChanged: (val) => password = val,
+                    validator: (val) => val!.length < 6
+                        ? 'Enter a password 6+ chars long'
+                        : null,
+                  ),
+                  const SizedBox(height: 20),
+                ],
                 if (error.isNotEmpty)
                   Text(
                     error,
@@ -112,13 +160,24 @@ class _SignupScreenState extends State<SignupScreen> {
                           if (_formKey.currentState!.validate()) {
                             setState(() => isLoading = true);
                             try {
-                              UserModel? result = await _auth
-                                  .signUpWithEmailAndPassword(
-                                    email,
-                                    password,
-                                    name,
-                                    widget.role,
-                                  );
+                              UserModel? result;
+                              if (widget.role == 'pupil') {
+                                result = await _auth.signInAnonymously(
+                                  name,
+                                  gender,
+                                  schoolLocation,
+                                );
+                              } else {
+                                result = await _auth.signUpWithEmailAndPassword(
+                                  email,
+                                  password,
+                                  name,
+                                  widget.role,
+                                  gender: gender,
+                                  schoolLocation: schoolLocation,
+                                );
+                              }
+
                               if (result == null) {
                                 setState(() {
                                   error =
@@ -127,7 +186,6 @@ class _SignupScreenState extends State<SignupScreen> {
                                 });
                               } else {
                                 // Navigation handled by wrapper or manual pop
-                                // Navigate to splash screen
                                 // Navigate to splash screen
                                 Navigator.pushReplacement(
                                   context,
@@ -156,7 +214,9 @@ class _SignupScreenState extends State<SignupScreen> {
                           ),
                         )
                       : Text(
-                          'Sign Up as ${widget.role.substring(0, 1).toUpperCase()}${widget.role.substring(1)}',
+                          widget.role == 'pupil'
+                              ? 'Start Learning'
+                              : 'Sign Up as ${widget.role.substring(0, 1).toUpperCase()}${widget.role.substring(1)}',
                           style: const TextStyle(
                             fontSize: 18,
                             color: Colors.white,
@@ -164,23 +224,24 @@ class _SignupScreenState extends State<SignupScreen> {
                         ),
                 ),
                 const SizedBox(height: 20),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text("Already have an account?"),
-                    TextButton(
-                      onPressed: () {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const LoginScreen(),
-                          ),
-                        );
-                      },
-                      child: const Text('Log In'),
-                    ),
-                  ],
-                ),
+                if (widget.role != 'pupil')
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text("Already have an account?"),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const LoginScreen(),
+                            ),
+                          );
+                        },
+                        child: const Text('Log In'),
+                      ),
+                    ],
+                  ),
               ],
             ),
           ),

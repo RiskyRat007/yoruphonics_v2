@@ -47,8 +47,7 @@ class YoruPhonicsApp extends StatelessWidget {
         home: const AuthWrapper(),
         routes: {
           'authwrapper': (context) => const AuthWrapper(),
-          '/splash': (context) =>
-              const SplashScreen(), // Not used as home anymore? Or maybe keep it?
+          '/splash': (context) => const SplashScreen(),
           '/home': (context) => HomeScreen(),
           '/phonics': (context) => PhonicsModuleScreen(studentId: 'P-101'),
           '/comprehension': (context) =>

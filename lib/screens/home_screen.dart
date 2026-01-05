@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../models/user_model.dart';
 import 'phonics_module.dart';
 import 'comprehension_module.dart';
-import 'teacher_dashboard.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -11,10 +12,34 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final String studentId = 'P-101';
+  final FlutterTts _tts = FlutterTts();
+
+  @override
+  void initState() {
+    super.initState();
+    _playWelcome();
+  }
+
+  Future<void> _playWelcome() async {
+    await Future.delayed(const Duration(seconds: 1)); // Small delay
+    await _tts.setLanguage("en-NG");
+    await _tts.setPitch(1.0);
+    // "E kaabo" is Yoruba for Welcome.
+    await _tts.speak("Welcome! E káàbọ!");
+  }
+
+  @override
+  void dispose() {
+    _tts.stop();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<UserModel?>(context);
+    final String displayName = user?.name ?? 'Friend';
+    final String studentId = user?.uid ?? 'unknown';
+
     return Scaffold(
       appBar: AppBar(title: Text('YoruPhonics Home')),
       body: Container(
@@ -32,7 +57,8 @@ class _HomeScreenState extends State<HomeScreen> {
               Image.asset('assets/ijapamascot.png', height: 220),
               SizedBox(height: 20),
               Text(
-                'Welcome to YoruPhonics!',
+                'Welcome, $displayName!',
+                textAlign: TextAlign.center,
                 style: GoogleFonts.fredoka(
                   fontSize: 36,
                   color: Colors.green.shade800,
