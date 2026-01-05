@@ -13,7 +13,6 @@ import 'screens/teacher_dashboard.dart';
 import 'screens/researcher_dashboard.dart';
 import 'screens/auth/role_selection_screen.dart';
 import 'screens/auth/login_screen.dart';
-import 'screens/auth/pupil_login_screen.dart';
 import 'screens/auth_wrapper.dart';
 
 // 🔐 Services + Models
@@ -63,7 +62,6 @@ class YoruPhonicsApp extends StatelessWidget {
           '/researcher-dashboard': (context) => ResearcherDashboardScreen(),
           '/role-selection': (context) => const RoleSelectionScreen(),
           '/login': (context) => const LoginScreen(), // Teachers/Researchers
-          '/pupil-login': (context) => const PupilLoginScreen(), // Pupils only
         },
       ),
     );

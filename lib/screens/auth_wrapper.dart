@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
 import '../models/user_model.dart';
 import 'auth/role_selection_screen.dart';
 import 'home_screen.dart';
 import 'teacher_dashboard.dart';
 import 'researcher_dashboard.dart';
-import 'auth/pupil_login_screen.dart';
 
 class AuthWrapper extends StatelessWidget {
   const AuthWrapper({super.key});
@@ -20,20 +20,21 @@ class AuthWrapper extends StatelessWidget {
     }
 
     // If user exists but role not assigned yet
+    // ignore: unnecessary_null_comparison
     if (user.role == null || user.role!.isEmpty) {
-      return const HomeScreen();
+      return HomeScreen();
     }
 
     // Route based on role
     switch (user.role) {
       case 'pupil':
-        return const PupilLoginScreen();
+        return HomeScreen();
       case 'teacher':
-        return const TeacherDashboardScreen();
+        return TeacherDashboardScreen();
       case 'researcher':
-        return const ResearcherDashboardScreen();
+        return ResearcherDashboardScreen();
       default:
-        return const HomeScreen();
+        return HomeScreen();
     }
   }
 }

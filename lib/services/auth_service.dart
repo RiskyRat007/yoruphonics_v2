@@ -4,7 +4,7 @@ import '../models/user_model.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  final FirebaseFirestore _db = FirebaseFirestore.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   // Stream of UserModel? (null if not signed in)
   Stream<UserModel?> get user {
@@ -39,7 +39,7 @@ class AuthService {
         print("Error fetching user data: $e");
         return null;
       }
-    }
+    });
   }
 
   // 🔹 Sign up new user
