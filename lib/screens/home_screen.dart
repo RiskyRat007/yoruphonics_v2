@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_tts/flutter_tts.dart';
+//import 'package:flutter_tts/flutter_tts.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'phonics_module.dart';
 import 'comprehension_module.dart';
-import 'teacher_dashboard.dart';
+//import 'teacher_dashboard.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
