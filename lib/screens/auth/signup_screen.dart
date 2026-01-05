@@ -70,6 +70,20 @@ class _SignupScreenState extends State<SignupScreen> {
                   validator: (val) => val!.isEmpty ? 'Enter your name' : null,
                 ),
                 const SizedBox(height: 20),
+                if (widget.role == 'pupil')
+                  TextFormField(
+                    decoration: InputDecoration(
+                      labelText: 'Username',
+                      prefixIcon: const Icon(Icons.person),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                    onChanged: (val) => email = '$val@pupil.yoruphonics.com',
+                    validator: (val) =>
+                        val!.isEmpty ? 'Enter a username' : null,
+                  ),
+                const SizedBox(height: 20),
                 if (widget.role == 'pupil') ...[
                   DropdownButtonFormField<String>(
                     decoration: InputDecoration(
@@ -126,22 +140,22 @@ class _SignupScreenState extends State<SignupScreen> {
                     validator: (val) => val!.isEmpty ? 'Enter an email' : null,
                   ),
                   const SizedBox(height: 20),
-                  TextFormField(
-                    obscureText: true,
-                    decoration: InputDecoration(
-                      labelText: 'Password',
-                      prefixIcon: const Icon(Icons.lock_outline),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                    ),
-                    onChanged: (val) => password = val,
-                    validator: (val) => val!.length < 6
-                        ? 'Enter a password 6+ chars long'
-                        : null,
-                  ),
-                  const SizedBox(height: 20),
                 ],
+                // Password (Always show now)
+                TextFormField(
+                  obscureText: true,
+                  decoration: InputDecoration(
+                    labelText: 'Password',
+                    prefixIcon: const Icon(Icons.lock_outline),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                  onChanged: (val) => password = val,
+                  validator: (val) =>
+                      val!.length < 6 ? 'Enter a password 6+ chars long' : null,
+                ),
+                const SizedBox(height: 20),
                 if (error.isNotEmpty)
                   Text(
                     error,
@@ -166,22 +180,15 @@ class _SignupScreenState extends State<SignupScreen> {
                             setState(() => isLoading = true);
                             try {
                               UserModel? result;
-                              if (widget.role == 'pupil') {
-                                result = await _auth.signInAnonymously(
-                                  name,
-                                  gender,
-                                  schoolLocation,
-                                );
-                              } else {
-                                result = await _auth.signUpWithEmailAndPassword(
-                                  email,
-                                  password,
-                                  name,
-                                  widget.role,
-                                  gender: gender,
-                                  schoolLocation: schoolLocation,
-                                );
-                              }
+                              // All roles now use Email/Password (Pupil uses pseudo-email)
+                              result = await _auth.signUpWithEmailAndPassword(
+                                email,
+                                password,
+                                name,
+                                widget.role,
+                                gender: gender,
+                                schoolLocation: schoolLocation,
+                              );
 
                               if (result == null) {
                                 setState(() {
@@ -190,7 +197,6 @@ class _SignupScreenState extends State<SignupScreen> {
                                   isLoading = false;
                                 });
                               } else {
-                                // Navigation handled by wrapper or manual pop
                                 // Navigate to splash screen
                                 Navigator.pushReplacement(
                                   context,

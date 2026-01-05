@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../models/user_model.dart';
 import '../services/sound_service.dart';
+import '../services/auth_service.dart';
 import 'phonics_module.dart';
 import 'comprehension_module.dart';
 
@@ -38,6 +39,8 @@ class _HomeScreenState extends State<HomeScreen> {
     final user = Provider.of<UserModel?>(context);
     final String displayName = user?.name ?? 'Friend';
     final String studentId = user?.uid ?? 'unknown';
+    final bool isTeacher = user?.role == 'teacher';
+    final AuthService _auth = AuthService();
 
     return Scaffold(
       backgroundColor: const Color(0xFFFFF8E1),
@@ -46,8 +49,21 @@ class _HomeScreenState extends State<HomeScreen> {
           'YoruPhonics Home',
           style: GoogleFonts.fredoka(fontWeight: FontWeight.bold),
         ),
+        foregroundColor: Colors.white,
         backgroundColor: Colors.green.shade700,
         elevation: 0,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.logout),
+            tooltip: 'Log Out',
+            onPressed: () async {
+              await _auth.signOut();
+              // Navigation to role selection handled by AuthWrapper stream or manually
+              Navigator.of(context).popUntil((route) => route.isFirst);
+              Navigator.pushReplacementNamed(context, '/role-selection');
+            },
+          ),
+        ],
       ),
       body: Container(
         decoration: const BoxDecoration(
@@ -63,7 +79,7 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Image.asset('assets/ijapamascot.png', height: 220),
+                Image.asset('assets/ijapamascot.png', height: 160),
                 const SizedBox(height: 20),
                 Text(
                   'Welcome, $displayName!',
@@ -83,7 +99,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     color: Colors.grey.shade800,
                   ),
                 ),
-                const SizedBox(height: 40),
+                const SizedBox(height: 16),
                 Text(
                   'Choose a module to start:',
                   style: GoogleFonts.fredoka(
@@ -91,7 +107,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     fontWeight: FontWeight.w600,
                   ),
                 ),
-                SizedBox(height: 30),
+                SizedBox(height: 20),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.green.shade800,
@@ -151,30 +167,32 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                 ),
-                SizedBox(height: 15),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.green.shade800,
-                    foregroundColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 12,
-                      horizontal: 24,
+                if (isTeacher) ...[
+                  SizedBox(height: 15),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.green.shade800,
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 12,
+                        horizontal: 24,
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
                     ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/teacher-dashboard');
+                    },
+                    child: Text(
+                      'Teacher Dashboard',
+                      style: GoogleFonts.fredoka(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ),
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/teacher-dashboard');
-                  },
-                  child: Text(
-                    'Teacher Dashboard',
-                    style: GoogleFonts.fredoka(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ),
+                ],
               ],
             ),
           ),

@@ -46,6 +46,7 @@ class ResearcherDashboardScreen extends StatelessWidget {
           'Researcher Dashboard',
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
+        foregroundColor: Colors.white,
         backgroundColor: Colors.purple,
         actions: [
           IconButton(

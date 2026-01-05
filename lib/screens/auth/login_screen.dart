@@ -52,17 +52,25 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 const SizedBox(height: 40),
 
-                // Email field
+                // Email/Username field
                 TextFormField(
                   decoration: InputDecoration(
-                    labelText: 'Email',
-                    prefixIcon: const Icon(Icons.email_outlined),
+                    labelText: 'Email or Username',
+                    prefixIcon: const Icon(Icons.person_outline),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
                   ),
-                  onChanged: (val) => email = val,
-                  validator: (val) => val!.isEmpty ? 'Enter an email' : null,
+                  onChanged: (val) {
+                    // Smart handling: if it looks like a username, treat as pupil
+                    if (!val.contains('@')) {
+                      email = '$val@pupil.yoruphonics.com';
+                    } else {
+                      email = val;
+                    }
+                  },
+                  validator: (val) =>
+                      val!.isEmpty ? 'Enter email/username' : null,
                 ),
                 const SizedBox(height: 20),
 
@@ -105,6 +113,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           if (_formKey.currentState!.validate()) {
                             setState(() => isLoading = true);
                             try {
+                              // 'email' variable already has the correct format from onChanged
                               UserModel? result = await _auth
                                   .signInWithEmailAndPassword(email, password);
                               if (result == null) {

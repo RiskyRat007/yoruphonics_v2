@@ -143,45 +143,4 @@ class AuthService {
       return;
     }
   }
-
-  // Pupil "Login" (Anonymous / One-off session)
-  Future<UserModel?> signInAnonymously(
-    String name,
-    String? gender,
-    String? schoolLocation,
-  ) async {
-    try {
-      UserCredential result = await _auth.signInAnonymously();
-      User? user = result.user;
-
-      if (user != null) {
-        UserModel newUser = UserModel(
-          uid: user.uid,
-          email: 'anonymous',
-          name: name,
-          role: 'pupil',
-          gender: gender,
-          schoolLocation: schoolLocation,
-        );
-        await _firestore
-            .collection('students')
-            .doc(user.uid)
-            .set(newUser.toMap());
-        return newUser;
-      }
-      return null;
-    } catch (e) {
-      print("Anonymous Auth Failed: $e");
-      // Fallback: Create random email/pass if anonymous is disabled
-      String randomEmail = '${DateTime.now().microsecondsSinceEpoch}@temp.com';
-      return signUpWithEmailAndPassword(
-        randomEmail,
-        'password123',
-        name,
-        'pupil',
-        gender: gender,
-        schoolLocation: schoolLocation,
-      );
-    }
-  }
 }

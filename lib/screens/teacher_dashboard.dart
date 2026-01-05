@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import '../services/auth_service.dart';
 
 class TeacherDashboardScreen extends StatelessWidget {
   final CollectionReference studentsCollection = FirebaseFirestore.instance
       .collection('students');
+  final AuthService _auth = AuthService();
 
   void _exportData(BuildContext context, List<QueryDocumentSnapshot> docs) {
     // Generate CSV String
@@ -35,7 +37,20 @@ class TeacherDashboardScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Teacher Dashboard')),
+      appBar: AppBar(
+        title: Text('Teacher Dashboard'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.logout),
+            tooltip: 'Log Out',
+            onPressed: () async {
+              await _auth.signOut();
+              Navigator.of(context).popUntil((route) => route.isFirst);
+              Navigator.pushReplacementNamed(context, '/role-selection');
+            },
+          ),
+        ],
+      ),
       body: StreamBuilder<QuerySnapshot>(
         stream: studentsCollection.snapshots(),
         builder: (context, snapshot) {
