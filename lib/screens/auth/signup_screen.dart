@@ -6,7 +6,7 @@ import 'login_screen.dart';
 import '../splash_screen.dart';
 
 class SignupScreen extends StatefulWidget {
-  final String role;
+  final String role; // "pupil", "teacher", or "researcher"
   const SignupScreen({super.key, required this.role});
 
   @override
@@ -30,7 +30,8 @@ class _SignupScreenState extends State<SignupScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Sign Up as ${widget.role.substring(0, 1).toUpperCase()}${widget.role.substring(1)}',
+          'Sign Up as ${widget.role[0].toUpperCase()}${widget.role.substring(1)}',
+          style: GoogleFonts.fredoka(fontWeight: FontWeight.bold),
         ),
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -46,7 +47,7 @@ class _SignupScreenState extends State<SignupScreen> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Text(
-                  'Create Account',
+                  'Create Your Account',
                   textAlign: TextAlign.center,
                   style: GoogleFonts.fredoka(
                     fontSize: 32,
@@ -55,6 +56,8 @@ class _SignupScreenState extends State<SignupScreen> {
                   ),
                 ),
                 const SizedBox(height: 40),
+
+                // Full Name
                 TextFormField(
                   decoration: InputDecoration(
                     labelText: 'Full Name',
@@ -146,6 +149,8 @@ class _SignupScreenState extends State<SignupScreen> {
                     textAlign: TextAlign.center,
                   ),
                 const SizedBox(height: 20),
+
+                // Sign Up Button
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.teal,

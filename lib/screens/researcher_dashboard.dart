@@ -38,15 +38,22 @@ class ResearcherDashboardScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final AuthService _auth = AuthService();
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Researcher Dashboard'),
+        title: const Text(
+          'Researcher Dashboard',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
         backgroundColor: Colors.purple,
         actions: [
           IconButton(
             icon: const Icon(Icons.logout),
+            tooltip: 'Log out',
             onPressed: () async {
               await _auth.signOut();
+              Navigator.pushReplacementNamed(context, '/login');
             },
           ),
         ],

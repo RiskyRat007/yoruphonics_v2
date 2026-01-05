@@ -1,10 +1,11 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:yoruphonics_v2/screens/splash_screen.dart';
 import 'firebase_options.dart';
+import 'package:provider/provider.dart';
 
-// Import your existing app screens
+// 📱 Screens
+import 'screens/splash_screen.dart';
 import 'screens/home_screen.dart';
 import 'screens/phonics_module.dart';
 import 'screens/comprehension_module.dart';
@@ -12,10 +13,12 @@ import 'screens/teacher_dashboard.dart';
 import 'screens/researcher_dashboard.dart';
 import 'screens/auth/role_selection_screen.dart';
 import 'screens/auth/login_screen.dart';
+import 'screens/auth/pupil_login_screen.dart';
 import 'screens/auth_wrapper.dart';
+
+// 🔐 Services + Models
 import 'services/auth_service.dart';
 import 'models/user_model.dart';
-import 'package:provider/provider.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -44,18 +47,23 @@ class YoruPhonicsApp extends StatelessWidget {
           fontFamily: 'Noto',
           useMaterial3: true,
         ),
+
+        // 👇🏽 Default screen — controlled by user login status
         home: const AuthWrapper(),
+
+        // 👇🏽 App routes
         routes: {
           'authwrapper': (context) => const AuthWrapper(),
           '/splash': (context) => const SplashScreen(),
           '/home': (context) => HomeScreen(),
           '/phonics': (context) => PhonicsModuleScreen(studentId: 'P-101'),
           '/comprehension': (context) =>
-              ComprehensionModuleScreen(studentId: 'P-101'),
+              const ComprehensionModuleScreen(studentId: 'P-101'),
           '/teacher-dashboard': (context) => TeacherDashboardScreen(),
           '/researcher-dashboard': (context) => ResearcherDashboardScreen(),
           '/role-selection': (context) => const RoleSelectionScreen(),
-          '/login': (context) => const LoginScreen(),
+          '/login': (context) => const LoginScreen(), // Teachers/Researchers
+          '/pupil-login': (context) => const PupilLoginScreen(), // Pupils only
         },
       ),
     );

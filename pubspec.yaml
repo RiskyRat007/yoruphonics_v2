@@ -27,7 +27,7 @@ dependencies:
   flutter_spinkit: ^5.2.2      # Animated loading indicators
   animated_text_kit: ^4.2.2     # Typing / talking text animation
   flutter_tts: ^3.8.5           # Text-to-speech (Ijapa's voice)
-  audioplayers: ^6.0.0          # For playing MP3 assets
+  audioplayers: ^6.5.1
 
 
 dev_dependencies:
@@ -41,8 +41,17 @@ flutter:
   # --- Your image assets ---
   assets:
     - assets/ijapamascot.png
+    - assets/audio/ijapaintro.mp3
+    - assets/audio/teacherwelcomeback.mp3
+    - assets/audio/excellentomodaadaa.mp3
+    - assets/audio/tryagain.mp3
+    - assets/audio/phonicstar.mp3
+    - assets/audio/superstar.mp3
+    - assets/audio/jekalo.mp3
+    - assets/audio/ijapa_pupilwelcome.mp3
+    
 
-  # --- Your local font (Noto) ---
+    # --- Your local font (Noto) ---
   fonts:
     - family: Noto
       fonts:

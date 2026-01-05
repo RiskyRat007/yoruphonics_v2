@@ -41,13 +41,13 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyBNh_aKHW-E0Jltgi7HdQVqe0710CgRjpg',
-    appId: '1:676941103224:web:c27e8f622c1d408c962d8d',
-    messagingSenderId: '676941103224',
-    projectId: 'yoruphonics-v2',
-    authDomain: 'yoruphonics-v2.firebaseapp.com',
-    storageBucket: 'yoruphonics-v2.firebasestorage.app',
-    measurementId: 'G-726B0SED89',
+    apiKey: "AIzaSyBNh_aKHW-E0Jltgi7HdQVqe0710CgRjpg",
+    authDomain: "yoruphonics-v2.firebaseapp.com",
+    projectId: "yoruphonics-v2",
+    storageBucket: "yoruphonics-v2.firebasestorage.app",
+    messagingSenderId: "676941103224",
+    appId: "1:676941103224:web:f9831d9a643ddc98962d8d",
+    measurementId: "G-X1SCE5PNBR",
   );
 
   static const FirebaseOptions android = FirebaseOptions(

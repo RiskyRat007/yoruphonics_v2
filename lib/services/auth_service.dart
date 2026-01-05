@@ -1,10 +1,10 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import '../models/user_model.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseFirestore _db = FirebaseFirestore.instance;
 
   // Stream of UserModel? (null if not signed in)
   Stream<UserModel?> get user {
@@ -39,10 +39,10 @@ class AuthService {
         print("Error fetching user data: $e");
         return null;
       }
-    });
+    }
   }
 
-  // Sign Up
+  // 🔹 Sign up new user
   Future<UserModel?> signUpWithEmailAndPassword(
     String email,
     String password,
@@ -52,10 +52,12 @@ class AuthService {
     String? schoolLocation,
   }) async {
     try {
+      // Create user in Firebase Authentication
       UserCredential result = await _auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
+
       User? user = result.user;
 
       if (user != null) {
@@ -88,12 +90,12 @@ class AuthService {
       }
       return null;
     } catch (e) {
-      print(e.toString());
+      print("⚠️ General sign up error: $e");
       rethrow;
     }
   }
 
-  // Sign In
+  // 🔹 Sign in existing user
   Future<UserModel?> signInWithEmailAndPassword(
     String email,
     String password,
@@ -103,6 +105,7 @@ class AuthService {
         email: email,
         password: password,
       );
+
       User? user = result.user;
 
       if (user != null) {
@@ -126,12 +129,12 @@ class AuthService {
       }
       return null;
     } catch (e) {
-      print(e.toString());
+      print("⚠️ General sign in error: $e");
       rethrow;
     }
   }
 
-  // Sign Out
+  // 🔹 Sign out user
   Future<void> signOut() async {
     try {
       return await _auth.signOut();
