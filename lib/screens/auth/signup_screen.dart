@@ -6,7 +6,7 @@ import 'login_screen.dart';
 import '../splash_screen.dart';
 
 class SignupScreen extends StatefulWidget {
-  final String role;
+  final String role; // "pupil", "teacher", or "researcher"
   const SignupScreen({super.key, required this.role});
 
   @override
@@ -28,7 +28,8 @@ class _SignupScreenState extends State<SignupScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Sign Up as ${widget.role.substring(0, 1).toUpperCase()}${widget.role.substring(1)}',
+          'Sign Up as ${widget.role[0].toUpperCase()}${widget.role.substring(1)}',
+          style: GoogleFonts.fredoka(fontWeight: FontWeight.bold),
         ),
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -44,7 +45,7 @@ class _SignupScreenState extends State<SignupScreen> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Text(
-                  'Create Account',
+                  'Create Your Account',
                   textAlign: TextAlign.center,
                   style: GoogleFonts.fredoka(
                     fontSize: 32,
@@ -53,6 +54,8 @@ class _SignupScreenState extends State<SignupScreen> {
                   ),
                 ),
                 const SizedBox(height: 40),
+
+                // Full Name
                 TextFormField(
                   decoration: InputDecoration(
                     labelText: 'Full Name',
@@ -65,6 +68,8 @@ class _SignupScreenState extends State<SignupScreen> {
                   validator: (val) => val!.isEmpty ? 'Enter your name' : null,
                 ),
                 const SizedBox(height: 20),
+
+                // Email
                 TextFormField(
                   decoration: InputDecoration(
                     labelText: 'Email',
@@ -77,6 +82,8 @@ class _SignupScreenState extends State<SignupScreen> {
                   validator: (val) => val!.isEmpty ? 'Enter an email' : null,
                 ),
                 const SizedBox(height: 20),
+
+                // Password
                 TextFormField(
                   obscureText: true,
                   decoration: InputDecoration(
@@ -91,6 +98,8 @@ class _SignupScreenState extends State<SignupScreen> {
                       val!.length < 6 ? 'Enter a password 6+ chars long' : null,
                 ),
                 const SizedBox(height: 20),
+
+                // Error message
                 if (error.isNotEmpty)
                   Text(
                     error,
@@ -98,6 +107,8 @@ class _SignupScreenState extends State<SignupScreen> {
                     textAlign: TextAlign.center,
                   ),
                 const SizedBox(height: 20),
+
+                // Sign Up Button
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.teal,
@@ -117,8 +128,9 @@ class _SignupScreenState extends State<SignupScreen> {
                                     email,
                                     password,
                                     name,
-                                    widget.role,
+                                    widget.role, // ✅ added correct argument
                                   );
+
                               if (result == null) {
                                 setState(() {
                                   error =
@@ -126,8 +138,6 @@ class _SignupScreenState extends State<SignupScreen> {
                                   isLoading = false;
                                 });
                               } else {
-                                // Navigation handled by wrapper or manual pop
-                                // Navigate to splash screen
                                 // Navigate to splash screen
                                 Navigator.pushReplacement(
                                   context,
@@ -156,7 +166,7 @@ class _SignupScreenState extends State<SignupScreen> {
                           ),
                         )
                       : Text(
-                          'Sign Up as ${widget.role.substring(0, 1).toUpperCase()}${widget.role.substring(1)}',
+                          'Sign Up as ${widget.role[0].toUpperCase()}${widget.role.substring(1)}',
                           style: const TextStyle(
                             fontSize: 18,
                             color: Colors.white,
@@ -164,6 +174,8 @@ class _SignupScreenState extends State<SignupScreen> {
                         ),
                 ),
                 const SizedBox(height: 20),
+
+                // Login link
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [

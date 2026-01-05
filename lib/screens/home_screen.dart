@@ -1,134 +1,81 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_tts/flutter_tts.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'phonics_module.dart';
-import 'comprehension_module.dart';
-import 'teacher_dashboard.dart';
+import 'package:provider/provider.dart';
+import '../models/user_model.dart';
 
-class HomeScreen extends StatefulWidget {
-  @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
-  final String studentId = 'P-101';
+class HomeScreen extends StatelessWidget {
+  const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<UserModel?>(context);
+
+    // If already logged in, skip selection automatically
+    if (user != null) {
+      Future.microtask(() {
+        if (user.role == 'pupil') {
+          Navigator.pushReplacementNamed(context, '/pupil-login');
+        } else if (user.role == 'teacher') {
+          Navigator.pushReplacementNamed(context, '/teacher-dashboard');
+        } else if (user.role == 'researcher') {
+          Navigator.pushReplacementNamed(context, '/researcher-dashboard');
+        }
+      });
+    }
+
     return Scaffold(
-      appBar: AppBar(title: Text('YoruPhonics Home')),
-      body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Color(0xFFFFB74D), Color(0xFFFFE082)],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-          ),
+      backgroundColor: const Color(0xFFFFF8E1),
+      appBar: AppBar(
+        title: Text(
+          'YoruPhonics Home',
+          style: GoogleFonts.fredoka(fontWeight: FontWeight.bold),
         ),
-        child: Center(
+        backgroundColor: Colors.green.shade700,
+        elevation: 0,
+      ),
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(24.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image.asset('assets/ijapamascot.png', height: 220),
-              SizedBox(height: 20),
+              Image.asset('assets/ijapamascot.png', height: 180),
+              const SizedBox(height: 30),
               Text(
                 'Welcome to YoruPhonics!',
                 style: GoogleFonts.fredoka(
-                  fontSize: 36,
+                  fontSize: 26,
                   color: Colors.green.shade800,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 16),
               Text(
-                'Choose a module to start:',
-                style: GoogleFonts.fredoka(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w600,
+                'Learn, listen, and grow your reading skills in English and Yoruba.',
+                textAlign: TextAlign.center,
+                style: GoogleFonts.nunito(
+                  fontSize: 16,
+                  color: Colors.grey.shade800,
                 ),
               ),
-              SizedBox(height: 30),
+              const SizedBox(height: 40),
               ElevatedButton(
+                onPressed: () {
+                  Navigator.pushReplacementNamed(context, '/role-selection');
+                },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.green.shade800,
-                  foregroundColor: Colors.white,
+                  backgroundColor: Colors.green.shade700,
                   padding: const EdgeInsets.symmetric(
-                    vertical: 12,
-                    horizontal: 24,
+                    horizontal: 40,
+                    vertical: 16,
                   ),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
                 ),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) =>
-                          PhonicsModuleScreen(studentId: studentId),
-                    ),
-                  );
-                },
                 child: Text(
-                  'Start Phonics Module',
-                  style: GoogleFonts.fredoka(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ),
-              SizedBox(height: 15),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.green.shade800,
-                  foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 12,
-                    horizontal: 24,
-                  ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) =>
-                          ComprehensionModuleScreen(studentId: studentId),
-                    ),
-                  );
-                },
-                child: Text(
-                  'Start Comprehension Module',
-                  style: GoogleFonts.fredoka(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ),
-              SizedBox(height: 15),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.green.shade800,
-                  foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 12,
-                    horizontal: 24,
-                  ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
-                onPressed: () {
-                  Navigator.pushNamed(context, '/teacher-dashboard');
-                },
-                child: Text(
-                  'Teacher Dashboard',
-                  style: GoogleFonts.fredoka(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w600,
-                  ),
+                  'Get Started',
+                  style: GoogleFonts.fredoka(fontSize: 18, color: Colors.white),
                 ),
               ),
             ],
